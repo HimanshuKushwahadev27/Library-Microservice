@@ -8,6 +8,7 @@ import com.emi.Catalog_Service.exception.BookDeletedException;
 import com.emi.Catalog_Service.exception.BookNotFoundException;
 import com.emi.Catalog_Service.exception.ContentDeletedException;
 import com.emi.Catalog_Service.exception.ContentNotFoundException;
+import com.emi.Catalog_Service.exception.GenreNotFoundException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -35,6 +36,13 @@ public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(ContentDeletedException.class)
 	public ResponseEntity<?> handleBookContentDeleted(ContentDeletedException ex){
+		return ResponseEntity
+				.status(410)
+				.body(ex.getMessage());
+	}
+	
+	@ExceptionHandler(GenreNotFoundException.class)
+	public ResponseEntity<?> handleGenreNotFound(GenreNotFoundException ex){
 		return ResponseEntity
 				.status(410)
 				.body(ex.getMessage());

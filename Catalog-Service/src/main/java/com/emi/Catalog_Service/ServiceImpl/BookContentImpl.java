@@ -3,7 +3,6 @@ package com.emi.Catalog_Service.ServiceImpl;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.emi.Catalog_Service.Entity.Book;
@@ -118,7 +117,7 @@ public class BookContentImpl implements BookContentService {
 	}
 
 	@Override
-	public ResponseEntity<?> deleteBookContentByContentId(UUID contentId) {
+	public String deleteBookContentByContentId(UUID contentId) {
 		Book_Content content = contentRepo.findById(contentId).orElseThrow(
 				() -> new ContentNotFoundException("Content not found with id: " + contentId));
 		
@@ -129,17 +128,17 @@ public class BookContentImpl implements BookContentService {
 		content.setDeleted(true);
 		content.setStatus(com.emi.Catalog_Service.enums.BookChapter_Status.DELETED);
 		contentRepo.save(content);
-		return ResponseEntity.ok("Content deleted successfully with id: " + contentId);
+		return "Content deleted successfully with id: " + contentId;
 	}
 
 	@Override
-	public ResponseEntity<?> deleteBookContentsByContentIds(List<UUID> contentIds) {
+	public String deleteBookContentsByContentIds(List<UUID> contentIds) {
 		contentIds.forEach(this::deleteBookContentByContentId);
-		return ResponseEntity.ok("Contents deleted successfully for provided ids.");
+		return "Contents deleted successfully for provided ids.";
 	}
 
 	@Override
-	public ResponseEntity<?> deleteBookContentByBookId(UUID bookId) {
+	public String deleteBookContentByBookId(UUID bookId) {
 		List<Book_Content> contents = contentRepo.findByBookIdAndIsDeletedFalse(bookId);
 		
 		if(contents.isEmpty()) {
@@ -152,7 +151,7 @@ public class BookContentImpl implements BookContentService {
 			contentRepo.save(content);
 		});
 		
-		return ResponseEntity.ok("All contents deleted successfully for book with id: " + bookId);
+		return "All contents deleted successfully for book with id: " + bookId;
 	}
 
 }

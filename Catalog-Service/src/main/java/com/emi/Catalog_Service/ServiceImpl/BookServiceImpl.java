@@ -3,7 +3,6 @@ package com.emi.Catalog_Service.ServiceImpl;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.emi.Catalog_Service.Entity.Book;
@@ -13,6 +12,7 @@ import com.emi.Catalog_Service.RequestDtos.RequestBookCreationDto;
 import com.emi.Catalog_Service.RequestDtos.RequsestBookUpdateDto;
 import com.emi.Catalog_Service.ResponseDtos.ResponseBookDto;
 import com.emi.Catalog_Service.ResponseDtos.ResponseFullBookDto;
+import com.emi.Catalog_Service.Services.BookContentService;
 import com.emi.Catalog_Service.Services.BookService;
 import com.emi.Catalog_Service.enums.BookStatus;
 import com.emi.Catalog_Service.exception.BookDeletedException;
@@ -22,11 +22,15 @@ import com.emi.Catalog_Service.mapper.BookMapper;
 import com.emi.Catalog_Service.mapper.GenreSnapshotMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
 
+	
+	private final BookContentService contentService;
 	private final BookContentRepo contentRepo;
 	private final BookRepository bookRepo;
 	private final BookMapper bookMapper;
@@ -95,7 +99,7 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public ResponseEntity<?> deleteBook(UUID bookId) {
+	public String deleteBook(UUID bookId) {
 		Book book = bookRepo.findById(bookId)
 				.orElseThrow(
 						() -> new BookNotFoundException("Book not found with id: " + bookId)
@@ -103,11 +107,18 @@ public class BookServiceImpl implements BookService {
 		if(book.isDeleted()) {
 			throw new BookDeletedException("Book with id: " + bookId + " has been already deleted.");
 		}
+
 		book.setDeleted(true);
 		book.setStatus(BookStatus.DELETED);
+		
+		if(book.getTotalChapters()>0) {
+		String info=contentService.deleteBookContentByBookId(bookId);
+		log.info(info);
+		}
+		
 		bookRepo.save(book);
 		
-		return ResponseEntity.ok("Book deleted successfully with id: " + bookId);
+		return "Book deleted successfully with id: " + bookId;
 	}
 
 }
