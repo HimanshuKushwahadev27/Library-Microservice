@@ -3,6 +3,7 @@ package com.emi.Catalog_Service.mapper;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -48,8 +49,8 @@ public class BookMapper {
 				book.getDescription(),
 				book.getISBN(),
 				book.getPrice(),
-				book.getAuthorSnapshots().stream().map(author -> author.getId()).toList(),
-				book.getGenreIds().stream().map(genre -> genre.getId()).toList(),
+				book.getAuthorSnapshots().stream().collect(Collectors.toList()),
+				book.getGenreIds().stream().collect(Collectors.toList()),
 				book.getStatus().name(),
 				book.getTotalChapters(),
 				chapterIds,

@@ -13,7 +13,9 @@ import com.emi.Catalog_Service.RequestDtos.RequestBookCreationDto;
 import com.emi.Catalog_Service.RequestDtos.RequsestBookUpdateDto;
 import com.emi.Catalog_Service.ResponseDtos.ResponseBookDto;
 import com.emi.Catalog_Service.ResponseDtos.ResponseFullBookDto;
-import com.emi.Catalog_Service.Services.BookReadOnly;
+import com.emi.Catalog_Service.Services.BookService;
+import com.emi.Catalog_Service.enums.BookStatus;
+import com.emi.Catalog_Service.exception.BookDeletedException;
 import com.emi.Catalog_Service.exception.BookNotFoundException;
 import com.emi.Catalog_Service.mapper.AuthorSnapshotMapper;
 import com.emi.Catalog_Service.mapper.BookMapper;
@@ -23,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class BookReadServiceImpl implements BookReadOnly {
+public class BookServiceImpl implements BookService {
 
 	private final BookContentRepo contentRepo;
 	private final BookRepository bookRepo;
@@ -64,27 +66,11 @@ public class BookReadServiceImpl implements BookReadOnly {
 
 	@Override
 	public List<ResponseFullBookDto> getBookByIds(List<UUID> bookIds) {
-		List<Book> books = bookRepo
-				.findAllById(bookIds);
-		
-		if(books.isEmpty()) {
-			throw new BookNotFoundException("Books not found with ids: " + bookIds);
-		}
-		
-		books.stream()
-		      .filter(book -> book.isDeleted())
-		      .findAny()
-		      .ifPresent(deletedBook -> {
-		    	  throw new BookDeletedException("Book with id: " + deletedBook.getId() + " has been deleted.");
-		      });
-		
-		return books.stream()
-				.map(book -> bookMapper.toFullBookDto(book, contentRepo.findAllByBookId(book.getId())
-						.stream()
-						.map(content -> content.getId())
-						.toList()))
+	  		List<ResponseFullBookDto> books = bookIds
+				.stream()
+				.map(this::getBookById)
 				.toList();
-		          
+		return books;
 	}
 
 	@Override
@@ -118,6 +104,7 @@ public class BookReadServiceImpl implements BookReadOnly {
 			throw new BookDeletedException("Book with id: " + bookId + " has been already deleted.");
 		}
 		book.setDeleted(true);
+		book.setStatus(BookStatus.DELETED);
 		bookRepo.save(book);
 		
 		return ResponseEntity.ok("Book deleted successfully with id: " + bookId);

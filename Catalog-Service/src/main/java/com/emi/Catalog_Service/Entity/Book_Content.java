@@ -57,6 +57,6 @@ public class Book_Content {
 	@Column(name="status", nullable=false)
 	private BookChapter_Status status;
 	
-	@Column(name="free_access", nullable=false)
-	private Boolean freeAccess;
+	private boolean isDeleted;
+
 }

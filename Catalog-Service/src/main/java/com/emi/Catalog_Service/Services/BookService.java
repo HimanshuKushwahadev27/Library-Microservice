@@ -10,7 +10,7 @@ import com.emi.Catalog_Service.RequestDtos.RequsestBookUpdateDto;
 import com.emi.Catalog_Service.ResponseDtos.ResponseBookDto;
 import com.emi.Catalog_Service.ResponseDtos.ResponseFullBookDto;
 
-public interface BookReadOnly {
+public interface BookService {
 
 	public ResponseBookDto createBook(RequestBookCreationDto requestDto); 
 	public ResponseFullBookDto getBookById(UUID bookId);

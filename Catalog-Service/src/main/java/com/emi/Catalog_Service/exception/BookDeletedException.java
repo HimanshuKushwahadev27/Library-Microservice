@@ -1,4 +1,4 @@
-package com.emi.Catalog_Service.ServiceImpl;
+package com.emi.Catalog_Service.exception;
 
 public class BookDeletedException extends RuntimeException {
 
