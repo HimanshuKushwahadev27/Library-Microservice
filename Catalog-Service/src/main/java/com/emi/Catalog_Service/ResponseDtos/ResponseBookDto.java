@@ -2,6 +2,8 @@ package com.emi.Catalog_Service.ResponseDtos;
 
 import java.util.UUID;
 
+import com.emi.Catalog_Service.enums.BookStatus;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -20,10 +22,9 @@ public record ResponseBookDto (
 	    @NotBlank
 	    @Schema(
 	        description = "Publication status of the book",
-	        example = "PUBLIC",
-	        allowableValues = {"PUBLIC", "HIDDEN", "DELETED"}
+	        example = "ONGOING"
 	    )
-		String status,
+		BookStatus status,
 		
 	    @NotNull
 	    @Min(0)

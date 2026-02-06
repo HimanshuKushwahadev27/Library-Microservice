@@ -1,10 +1,11 @@
-package com.emi.Catalog_Service.enums;
+package com.emi.Authoring_service.enums;
 
 public enum BookStatus {
-	
+
     COMPLETED,
     ONGOING,
 	PUBLIC,
 	HIDDEN,
 	DELETED;
+
 }

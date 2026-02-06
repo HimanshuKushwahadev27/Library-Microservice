@@ -12,7 +12,6 @@ import com.emi.Catalog_Service.RequestDtos.RequestBookCreationDto;
 import com.emi.Catalog_Service.RequestDtos.RequsestBookUpdateDto;
 import com.emi.Catalog_Service.ResponseDtos.ResponseBookDto;
 import com.emi.Catalog_Service.ResponseDtos.ResponseFullBookDto;
-import com.emi.Catalog_Service.enums.BookStatus;
 
 @Component
 public class BookMapper {
@@ -25,17 +24,17 @@ public class BookMapper {
 		book.setPrice(requestDto.price());
 		book.setCreatedAt(Instant.now());
 		book.setUpdatedAt(Instant.now());
-		book.setStatus(BookStatus.PUBLIC);
 		book.setTotalChapters(0);
 		book.setDeleted(false);
 		book.setFreePreview(requestDto.freePreviewAvailable());
+		book.setStatus(requestDto.status());
 		return book;
 	}
 
 	public ResponseBookDto toDto(Book savedBook) {
 		return new ResponseBookDto(
 				savedBook.getId(),
-				savedBook.getTitle(),
+				savedBook.getStatus(),
 				savedBook.getTotalChapters(),
 				"Book Saved in Author's publsh section Successfully (Catalog service)"
 				);
@@ -51,7 +50,7 @@ public class BookMapper {
 				book.getPrice(),
 				book.getAuthorSnapshots().stream().collect(Collectors.toList()),
 				book.getGenreIds().stream().collect(Collectors.toList()),
-				book.getStatus().name(),
+				book.getStatus(),
 				book.getTotalChapters(),
 				chapterIds,
 				book.getFreePreview()
@@ -59,7 +58,6 @@ public class BookMapper {
 	}
 	
 	public Book updateBookEntity(RequsestBookUpdateDto request, Book book) {
-		book.setTitle(request.title());
 		book.setPrice(request.price());
 		book.setDescription(request.description());
 		book.setFreePreview(request.freePreviewAvailable());
@@ -70,7 +68,7 @@ public class BookMapper {
 	public ResponseBookDto returnUpdatedBook(RequsestBookUpdateDto request, Integer totalChapters) {
 		return new ResponseBookDto(
 				request.bookId(),
-				request.title(),
+				request.status(),
 				totalChapters,
 				"Book Saved in Author's publsh section Successfully (Catalog service)"				
 				);

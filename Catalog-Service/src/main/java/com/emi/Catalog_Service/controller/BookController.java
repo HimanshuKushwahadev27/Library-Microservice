@@ -48,15 +48,15 @@ public class BookController {
 		return ResponseEntity.ok(bookService.getBookByIds(bookIds));
 	}
 	
-	@PatchMapping(value="/update")
+	@PatchMapping(value="/update/{authorId}")
 	public ResponseEntity<ResponseBookDto> updateBook(
-			@RequestBody @Valid RequsestBookUpdateDto request){
-		return ResponseEntity.ok(bookService.updateBook(request));
+			@RequestBody @Valid RequsestBookUpdateDto request, @PathVariable UUID authorId){
+		return ResponseEntity.ok(bookService.updateBook(request, authorId));
 	}
 	
-	@DeleteMapping(value="/{bookId}")
+	@DeleteMapping(value="/{bookId}/{authorId}")
 	public ResponseEntity<String> deleteBook(
-			@PathVariable UUID bookId){
-		return ResponseEntity.ok(bookService.deleteBook(bookId));
+			@PathVariable UUID bookId, @PathVariable UUID authorId){
+		return ResponseEntity.ok(bookService.deleteBook(bookId,authorId));
 	}
 }

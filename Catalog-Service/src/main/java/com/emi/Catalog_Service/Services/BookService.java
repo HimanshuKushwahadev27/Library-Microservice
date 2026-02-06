@@ -14,7 +14,7 @@ public interface BookService {
 	public ResponseBookDto createBook(RequestBookCreationDto requestDto); 
 	public ResponseFullBookDto getBookById(UUID bookId);
 	public List<ResponseFullBookDto> getBookByIds(List<UUID> bookIds);
-	public ResponseBookDto updateBook(RequsestBookUpdateDto requestDto);
-	public String deleteBook(UUID bookId);
+	public String deleteBook(UUID bookId, UUID authorId);
+	ResponseBookDto updateBook(RequsestBookUpdateDto requestDto, UUID authorId);
 	
 }

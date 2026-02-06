@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.UUID;
 
+import com.emi.Catalog_Service.enums.BookStatus;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -29,13 +31,7 @@ public record RequsestBookUpdateDto (
 	    )
 		BigDecimal price,
 		
-	    @NotBlank
-	    @Schema(
-	        description = "Title of the book",
-	        example = "Spring Boot Internals"
-	    )
-		String title,
-		
+
 	    @NotBlank
 	    @Size(max = 1000)
 	    @Schema(
@@ -56,7 +52,15 @@ public record RequsestBookUpdateDto (
 	        description = "Map of genre IDs and their names associated with the book",
 	        example = "{\"550e8400-e29b-41d4-a716-446655440000\": \"John Doe\"}"
 	    )
-		Map<UUID, String> genreInfo
+		Map<UUID, String> genreInfo,
+
+	    @NotBlank
+	    @Schema(
+	        description = "Publication status of the book",
+	        example = "ONGOING"
+	    )
+		BookStatus status
+		
 		)
 {
 

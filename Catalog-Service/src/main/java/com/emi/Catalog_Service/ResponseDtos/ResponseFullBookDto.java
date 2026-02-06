@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import com.emi.Catalog_Service.Snapshots.AuthorSnapshots;
 import com.emi.Catalog_Service.Snapshots.GenreSnapshot;
+import com.emi.Catalog_Service.enums.BookStatus;
 
 import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -65,10 +66,9 @@ public record ResponseFullBookDto(
     @NotBlank
     @Schema(
         description = "Publication status of the book",
-        example = "PUBLIC",
-        allowableValues = {"PUBLIC", "HIDDEN", "DELETED"}
+        example = "ONGOING"
     )
-    String status,
+    BookStatus status,
 
     @NotNull
     @Min(0)

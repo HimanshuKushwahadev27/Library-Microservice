@@ -19,10 +19,10 @@ public interface BookContentService {
 	
 	public List<ResponseContentDto> getBookContentByBookId(UUID bookId);
 
-    public String deleteBookContentByContentId(UUID contentId);
+    public String deleteBookContentByContentId(UUID contentId, UUID authorId);
     
-    public String deleteBookContentsByContentIds(List<UUID> contentIds);
+    public String deleteBookContentsByContentIds(List<UUID> contentIds, UUID authorId);
     
-    public String deleteBookContentByBookId(UUID bookId);
+    public String deleteBookContentByBookId(UUID bookId, UUID authorId);
 
 }

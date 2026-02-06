@@ -17,6 +17,7 @@ import com.emi.Catalog_Service.Services.BookService;
 import com.emi.Catalog_Service.enums.BookStatus;
 import com.emi.Catalog_Service.exception.BookDeletedException;
 import com.emi.Catalog_Service.exception.BookNotFoundException;
+import com.emi.Catalog_Service.exception.NotAuthorizedException;
 import com.emi.Catalog_Service.mapper.AuthorSnapshotMapper;
 import com.emi.Catalog_Service.mapper.BookMapper;
 import com.emi.Catalog_Service.mapper.GenreSnapshotMapper;
@@ -78,7 +79,7 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public ResponseBookDto updateBook(RequsestBookUpdateDto requestDto) {
+	public ResponseBookDto updateBook(RequsestBookUpdateDto requestDto, UUID authorId) {
 		
 		Book book = bookRepo.findById(requestDto.bookId())
 				.orElseThrow(
@@ -87,6 +88,10 @@ public class BookServiceImpl implements BookService {
 		
 		if(book.isDeleted()) {
 			throw new BookDeletedException("Book with id: " + requestDto.bookId() + " has been already deleted.");
+		}
+		
+		if(!book.getAuthorSnapshots().stream().anyMatch(snapshot -> snapshot.getId().equals(authorId))){
+			throw new NotAuthorizedException("You are not authorized to make any changes to book with Id " + book.getId());
 		}
 		
 		book=bookMapper.updateBookEntity(requestDto, book);
@@ -99,7 +104,7 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public String deleteBook(UUID bookId) {
+	public String deleteBook(UUID bookId, UUID authorId) {
 		Book book = bookRepo.findById(bookId)
 				.orElseThrow(
 						() -> new BookNotFoundException("Book not found with id: " + bookId)
@@ -108,11 +113,16 @@ public class BookServiceImpl implements BookService {
 			throw new BookDeletedException("Book with id: " + bookId + " has been already deleted.");
 		}
 
+		
+		if(!book.getAuthorSnapshots().stream().anyMatch(snapshot -> snapshot.getId().equals(authorId))){
+			throw new NotAuthorizedException("You are not authorized to make any changes to book with Id " + bookId);
+		}
+		
 		book.setDeleted(true);
 		book.setStatus(BookStatus.DELETED);
 		
 		if(book.getTotalChapters()>0) {
-		String info=contentService.deleteBookContentByBookId(bookId);
+		String info=contentService.deleteBookContentByBookId(bookId, authorId);
 		log.info(info);
 		}
 		

@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.UUID;
 
+import com.emi.Catalog_Service.enums.BookStatus;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -67,6 +69,14 @@ public record RequestBookCreationDto(
 	        description = "Detailed description of the book",
 	        example = "A deep dive into Spring Boot internals and architecture"
 	    )
-		String description
+		String description,
+		
+	    @NotBlank
+	    @Size(max = 50)
+	    @Schema(
+	        description = "Status for the book",
+	        example = "ONGOING, HIDDEN, COMPLETED "
+	    )
+		BookStatus status
 		) {
 }

@@ -35,19 +35,13 @@ public class BookContentController {
 		return ResponseEntity.ok(bookContentService.createBookContent(request));
 	}
 	
-	@PostMapping(value="/create/")
+	@PostMapping(value="/create")
 	public ResponseEntity<List<ResponseContentDto>> createMultipleBookContents(
 			@RequestBody @Valid List<RequestCreateContentDto> request){
 		return ResponseEntity.ok(bookContentService.createMultipleBookContents(request));
 	}
 	
-	@GetMapping(value="/contentId/{contentId}")
-	public ResponseEntity<ResponseContentDto> getBookContentByContentId(
-			@PathVariable UUID contentId){
-		return ResponseEntity.ok(bookContentService.getBookContentByContentId(contentId));
-	}
-	
-	@GetMapping
+	@GetMapping(value="/ContentIds")
 	public ResponseEntity<List<ResponseContentDto>> getBookContentsByContentIds(
 			@RequestParam List<UUID> contentIds){
 		return ResponseEntity.ok(bookContentService.getBookContentsByContentIds(contentIds));
@@ -59,22 +53,16 @@ public class BookContentController {
 		return ResponseEntity.ok(bookContentService.getBookContentByBookId(bookId));
 	}
 	
-	@DeleteMapping(value="/contentId/{contentId}")
+	@DeleteMapping(value="/contentIds/{authorId}")
 	public ResponseEntity<String> deleteBookContentByContentId(
-			@PathVariable UUID contentId){
-		return ResponseEntity.ok(bookContentService.deleteBookContentByContentId(contentId));
+			@RequestParam List<UUID> contentId, @PathVariable UUID authorId){
+		return ResponseEntity.ok(bookContentService.deleteBookContentsByContentIds(contentId, authorId));
 	}
 	
-	@DeleteMapping
-	public ResponseEntity<String> deleteBookContentsByContentIds(
-			@RequestParam List<UUID> contentIds){
-		return ResponseEntity.ok(bookContentService.deleteBookContentsByContentIds(contentIds));
-	}
-	
-	@DeleteMapping(value="/bookId/{bookId}")
+	@DeleteMapping(value="/bookId/{bookId}/{authorId}")
 	public ResponseEntity<String> deleteBookContentByBookId(
-			@PathVariable UUID bookId){
-		return ResponseEntity.ok(bookContentService.deleteBookContentByBookId(bookId));
+			@PathVariable UUID bookId,@PathVariable UUID authorId){
+		return ResponseEntity.ok(bookContentService.deleteBookContentByBookId(bookId, authorId));
 	}
 	
 	
