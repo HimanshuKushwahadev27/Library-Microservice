@@ -1,7 +1,6 @@
 package com.emi.Catalog_Service.RequestDtos;
 
 import java.math.BigDecimal;
-import java.util.Map;
 import java.util.UUID;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -51,12 +50,23 @@ public record RequsestBookUpdateDto (
 	    )
 		Boolean freePreviewAvailable,
 		
+<<<<<<< Updated upstream
 	    @NotNull
 	    @Schema(
 	        description = "Map of genre IDs and their names associated with the book",
 	        example = "{\"550e8400-e29b-41d4-a716-446655440000\": \"John Doe\"}"
 	    )
 		Map<UUID, String> genreInfo
+=======
+
+	    @NotBlank
+	    @Schema(
+	        description = "Publication status of the book",
+	        example = "ONGOING"
+	    )
+		BookStatus status
+		
+>>>>>>> Stashed changes
 		)
 {
 
