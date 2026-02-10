@@ -89,10 +89,8 @@ public class BookServiceImpl implements BookService {
 			throw new BookDeletedException("Book with id: " + requestDto.bookId() + " has been already deleted.");
 		}
 		
-<<<<<<< Updated upstream
+
 		book=bookMapper.updateBookEntity(requestDto, book);
-		genreMapper.updateGenreSnapshot(book, requestDto.genreInfo());
-=======
 		if(!book.getAuthorSnapshots().stream().anyMatch(snapshot -> snapshot.getId().equals(authorId))){
 			throw new NotAuthorizedException("You are not authorized to make any changes to book with Id " + book.getId());
 		}
@@ -102,7 +100,6 @@ public class BookServiceImpl implements BookService {
 		if(requestDto.status() == BookStatus.PUBLIC) {
 			book.setStatus(BookStatus.PUBLIC);
 		}
->>>>>>> Stashed changes
 		
 		bookRepo.save(book);
 		

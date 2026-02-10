@@ -3,6 +3,8 @@ package com.emi.Catalog_Service.RequestDtos;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+import com.emi.Catalog_Service.enums.BookStatus;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -50,14 +52,7 @@ public record RequsestBookUpdateDto (
 	    )
 		Boolean freePreviewAvailable,
 		
-<<<<<<< Updated upstream
-	    @NotNull
-	    @Schema(
-	        description = "Map of genre IDs and their names associated with the book",
-	        example = "{\"550e8400-e29b-41d4-a716-446655440000\": \"John Doe\"}"
-	    )
-		Map<UUID, String> genreInfo
-=======
+
 
 	    @NotBlank
 	    @Schema(
@@ -66,7 +61,6 @@ public record RequsestBookUpdateDto (
 	    )
 		BookStatus status
 		
->>>>>>> Stashed changes
 		)
 {
 
