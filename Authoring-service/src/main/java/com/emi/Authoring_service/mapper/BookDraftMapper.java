@@ -2,12 +2,20 @@ package com.emi.Authoring_service.mapper;
 
 import java.time.Instant;
 
+
+
 import org.springframework.stereotype.Component;
 
+import com.emi.Authoring_service.RequestDtos.PublishDraftBookRequest;
 import com.emi.Authoring_service.RequestDtos.RequestBookCreateDto;
+import com.emi.Authoring_service.RequestDtos.RequestBookCreationDto;
 import com.emi.Authoring_service.RequestDtos.RequestUpdateDraftBookDto;
+import com.emi.Authoring_service.RequestDtos.RequsestBookUpdateDto;
 import com.emi.Authoring_service.ResponseDtos.ResponseDraftBookDto;
 import com.emi.Authoring_service.entity.AuthorDraftBook;
+
+import jakarta.validation.Valid;
+
 
 @Component
 public class BookDraftMapper {
@@ -44,10 +52,9 @@ public class BookDraftMapper {
 							     
 	}
 
-	public AuthorDraftBook updateDraft(RequestUpdateDraftBookDto request) {
+	public AuthorDraftBook updateDraft(RequestUpdateDraftBookDto request, AuthorDraftBook draftBook ) {
 		
 		
-		AuthorDraftBook draftBook= new AuthorDraftBook();
 		draftBook.setDescription(request.description());
 		draftBook.setFreePreview(request.freePreview());
 		draftBook.setStatus(request.status());
@@ -57,6 +64,29 @@ public class BookDraftMapper {
 		
 		return draftBook;
 		
+	}
+
+	public @Valid RequestBookCreationDto toPublish(AuthorDraftBook bookDraft, PublishDraftBookRequest request) {
+		return new RequestBookCreationDto(
+				bookDraft.getTitle(),
+				bookDraft.getIsbn(),
+				bookDraft.getPrice(),
+				request.authorInfo(),
+				request.genreInfo(),
+				bookDraft.getFreePreview(),
+				bookDraft.getDescription(),
+				bookDraft.getStatus()
+				);
+	}
+
+	public @Valid RequsestBookUpdateDto toUpdatePublished(RequestUpdateDraftBookDto request) {
+		return new RequsestBookUpdateDto(
+				request.id(),
+				request.price(),
+				request.description(),
+				request.freePreview(),
+				request.status()
+				);
 	}
 
 }

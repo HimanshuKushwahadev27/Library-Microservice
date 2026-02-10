@@ -3,6 +3,7 @@ package com.emi.Authoring_service.service;
 import java.util.List;
 import java.util.UUID;
 
+import com.emi.Authoring_service.RequestDtos.PublishDraftBookRequest;
 import com.emi.Authoring_service.RequestDtos.RequestBookCreateDto;
 import com.emi.Authoring_service.RequestDtos.RequestUpdateDraftBookDto;
 import com.emi.Authoring_service.ResponseDtos.ResponseDraftBookDto;
@@ -16,7 +17,9 @@ public interface DraftBookService {
 	
 	public String deleteDraftBookById(UUID bookId, UUID authorId);
 	
-	public ResponseDraftBookDto publishDraftedBook( UUID draftBookId, UUID authorId);
+	public void publishDraftedBook( PublishDraftBookRequest request, UUID authorId);
 	
+
+	public void updatePublishedBook( RequestUpdateDraftBookDto request);
 
 }
