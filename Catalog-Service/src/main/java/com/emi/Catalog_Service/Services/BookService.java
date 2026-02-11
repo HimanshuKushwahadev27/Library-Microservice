@@ -11,7 +11,7 @@ import com.emi.Catalog_Service.ResponseDtos.ResponseFullBookDto;
 
 public interface BookService {
 
-	public ResponseBookDto createBook(RequestBookCreationDto requestDto); 
+	public UUID createBook(RequestBookCreationDto requestDto); 
 	public ResponseFullBookDto getBookById(UUID bookId);
 	public List<ResponseFullBookDto> getBookByIds(List<UUID> bookIds);
 	public String deleteBook(UUID bookId, UUID authorId);

@@ -35,7 +35,7 @@ public class BookContentController {
 		return ResponseEntity.ok(bookContentService.createBookContent(request));
 	}
 	
-	@PostMapping(value="/create")
+	@PostMapping(value="/createMultiple")
 	public ResponseEntity<List<ResponseContentDto>> createMultipleBookContents(
 			@RequestBody @Valid List<RequestCreateContentDto> request){
 		return ResponseEntity.ok(bookContentService.createMultipleBookContents(request));

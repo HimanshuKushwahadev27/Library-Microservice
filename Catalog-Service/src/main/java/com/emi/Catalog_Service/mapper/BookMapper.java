@@ -27,14 +27,16 @@ public class BookMapper {
 		book.setTotalChapters(0);
 		book.setDeleted(false);
 		book.setFreePreview(requestDto.freePreviewAvailable());
-		book.setStatus(requestDto.status());
+		book.setStatusLifecycle(requestDto.lifeCycleStatus());
+		book.setStatusVisible(requestDto.visibilityStatus());
 		return book;
 	}
 
 	public ResponseBookDto toDto(Book savedBook) {
 		return new ResponseBookDto(
 				savedBook.getId(),
-				savedBook.getStatus(),
+				savedBook.getStatusLifecycle(),
+				savedBook.getStatusVisible(),
 				savedBook.getTotalChapters(),
 				"Book Saved in Author's publsh section Successfully (Catalog service)"
 				);
@@ -50,7 +52,8 @@ public class BookMapper {
 				book.getPrice(),
 				book.getAuthorSnapshots().stream().collect(Collectors.toList()),
 				book.getGenreIds().stream().collect(Collectors.toList()),
-				book.getStatus(),
+				book.getStatusLifecycle(),
+				book.getStatusVisible(),
 				book.getTotalChapters(),
 				chapterIds,
 				book.getFreePreview()
@@ -68,7 +71,8 @@ public class BookMapper {
 	public ResponseBookDto returnUpdatedBook(RequsestBookUpdateDto request, Integer totalChapters) {
 		return new ResponseBookDto(
 				request.bookId(),
-				request.status(),
+				request.lifeCycleStatus(),
+				request.visibilityStatus(),
 				totalChapters,
 				"Book Saved in Author's publsh section Successfully (Catalog service)"				
 				);

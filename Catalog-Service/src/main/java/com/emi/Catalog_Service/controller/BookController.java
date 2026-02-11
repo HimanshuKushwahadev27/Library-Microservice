@@ -31,9 +31,9 @@ public class BookController {
 	private final BookService bookService;
 	
 	@PostMapping(value="/create")
-	public ResponseEntity<ResponseBookDto> createBook(
+	public UUID createBook(
 			@RequestBody @Valid RequestBookCreationDto request){
-		return ResponseEntity.ok(bookService.createBook(request));
+		return bookService.createBook(request);
 	}
 	
 	@GetMapping(value="/{bookId}")

@@ -2,21 +2,25 @@ package com.emi.Catalog_Service.ServiceImpl;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.emi.Catalog_Service.Entity.Book;
+import com.emi.Catalog_Service.Entity.Genre;
 import com.emi.Catalog_Service.Repository.BookContentRepo;
 import com.emi.Catalog_Service.Repository.BookRepository;
+import com.emi.Catalog_Service.Repository.GenreRepo;
 import com.emi.Catalog_Service.RequestDtos.RequestBookCreationDto;
 import com.emi.Catalog_Service.RequestDtos.RequsestBookUpdateDto;
 import com.emi.Catalog_Service.ResponseDtos.ResponseBookDto;
 import com.emi.Catalog_Service.ResponseDtos.ResponseFullBookDto;
 import com.emi.Catalog_Service.Services.BookContentService;
 import com.emi.Catalog_Service.Services.BookService;
-import com.emi.Catalog_Service.enums.BookStatus;
+import com.emi.Catalog_Service.enums.BookVisibilityStatus;
 import com.emi.Catalog_Service.exception.BookDeletedException;
 import com.emi.Catalog_Service.exception.BookNotFoundException;
+import com.emi.Catalog_Service.exception.GenreNotFoundException;
 import com.emi.Catalog_Service.exception.NotAuthorizedException;
 import com.emi.Catalog_Service.mapper.AuthorSnapshotMapper;
 import com.emi.Catalog_Service.mapper.BookMapper;
@@ -37,16 +41,35 @@ public class BookServiceImpl implements BookService {
 	private final BookMapper bookMapper;
 	private final AuthorSnapshotMapper authorMapper;
 	private final GenreSnapshotMapper genreMapper;
+	private final GenreRepo genreRepo;
 	
 	@Override
-	public ResponseBookDto createBook(RequestBookCreationDto requestDto) {
+	public UUID createBook(RequestBookCreationDto requestDto) {
 		Book book = bookMapper.toEntity(requestDto);
+		
+		List<UUID> genreUUIDs = requestDto.genreInfo()
+								.keySet()
+								.stream()
+								.collect(Collectors.toList());
+						
+		List<Genre> genres = genreUUIDs
+				.stream()
+				.map(
+						g -> genreRepo
+							.findById(g)
+							.orElseThrow(
+									() -> new GenreNotFoundException("No genre for the ID "+g)
+									))
+				.toList();
+		
+		if(genres.isEmpty()) {
+			throw new GenreNotFoundException("No genre created yet");
+		}
 		
 		authorMapper.setAuthorSnapshot(book, requestDto.authorInfo());
 		genreMapper.setGenreSnapshot(book, requestDto.genreInfo());
-		Book savedBook = bookRepo.save(book);
-		return bookMapper.toDto(savedBook);
-		
+		bookRepo.save(book);
+		return book.getId();	
 	}
 
 	@Override
@@ -95,7 +118,6 @@ public class BookServiceImpl implements BookService {
 		}
 		
 		book=bookMapper.updateBookEntity(requestDto, book);
-		genreMapper.updateGenreSnapshot(book, requestDto.genreInfo());
 		
 		bookRepo.save(book);
 		
@@ -119,7 +141,7 @@ public class BookServiceImpl implements BookService {
 		}
 		
 		book.setDeleted(true);
-		book.setStatus(BookStatus.DELETED);
+		book.setStatusVisible(BookVisibilityStatus.DELETE);;
 		
 		if(book.getTotalChapters()>0) {
 		String info=contentService.deleteBookContentByBookId(bookId, authorId);

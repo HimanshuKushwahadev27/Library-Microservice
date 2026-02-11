@@ -1,5 +1,6 @@
 package com.emi.Catalog_Service.controller;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
@@ -30,13 +31,20 @@ public class GenreController {
 		return ResponseEntity.ok(GenreService.createGenre(request));
 	}
 	
-	@GetMapping(value="genreId/{genreId}")
+	
+	@GetMapping(value="/allGenres")
+	public ResponseEntity<List<ResponseGenreDto>> getAllGenres(){
+		return ResponseEntity.ok(GenreService.getAllGenres());
+	}
+	
+	
+	@GetMapping(value="/genreId/{genreId}")
 	public ResponseEntity<ResponseGenreDto> getGenreById(
 			@PathVariable UUID genreId){
 		return ResponseEntity.ok(GenreService.getGenreById(genreId));
 	}
 	
-	@GetMapping(value="name/{name}")
+	@GetMapping(value="/name/{name}")
 	public ResponseEntity<ResponseGenreDto> getGenreByName(
 			@PathVariable String name){
 		return ResponseEntity.ok(GenreService.getGenreByName(name));

@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 public class Book_Content {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue
 	private UUID id;
 	
 	@Column(name="book_id", nullable=false)

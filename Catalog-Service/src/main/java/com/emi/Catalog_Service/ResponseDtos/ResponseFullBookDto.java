@@ -7,7 +7,8 @@ import java.util.UUID;
 
 import com.emi.Catalog_Service.Snapshots.AuthorSnapshots;
 import com.emi.Catalog_Service.Snapshots.GenreSnapshot;
-import com.emi.Catalog_Service.enums.BookStatus;
+import com.emi.Catalog_Service.enums.BookLifeCycleStatus;
+import com.emi.Catalog_Service.enums.BookVisibilityStatus;
 
 import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -66,9 +67,16 @@ public record ResponseFullBookDto(
     @NotBlank
     @Schema(
         description = "Publication status of the book",
-        example = "ONGOING"
+        example = "ONGOING, DRAFT, COMPLETED"
     )
-    BookStatus status,
+	BookLifeCycleStatus lifeCycleStatus,
+	
+    @NotBlank
+    @Schema(
+        description = "Publication status of the book",
+        example = "PRIVATE, PUBLIC"
+    )
+	BookVisibilityStatus visibilityStatus,
 
     @NotNull
     @Min(0)

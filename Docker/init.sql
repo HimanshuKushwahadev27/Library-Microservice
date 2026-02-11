@@ -1,0 +1,2 @@
+CREATE DATABASE authoringservice_db;
+CREATE DATABASE catalogservice_db;

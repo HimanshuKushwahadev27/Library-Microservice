@@ -13,7 +13,7 @@ import com.emi.Catalog_Service.Repository.BookRepository;
 import com.emi.Catalog_Service.RequestDtos.RequestCreateContentDto;
 import com.emi.Catalog_Service.ResponseDtos.ResponseContentDto;
 import com.emi.Catalog_Service.Services.BookContentService;
-import com.emi.Catalog_Service.enums.BookStatus;
+import com.emi.Catalog_Service.enums.BookVisibilityStatus;
 import com.emi.Catalog_Service.exception.BookDeletedException;
 import com.emi.Catalog_Service.exception.BookNotFoundException;
 import com.emi.Catalog_Service.exception.ContentDeletedException;
@@ -47,7 +47,7 @@ public class BookContentImpl implements BookContentService {
 		}
 		
 		
-		if(book.getStatus()!=BookStatus.PUBLIC) {
+		if(!book.getStatusVisible().equals(BookVisibilityStatus.PUBLIC)) {
 			throw new BookDeletedException("Book for the bookID " + createContentDto.bookId() + " is not PUBLIC.");
 
 		}
@@ -82,7 +82,7 @@ public class BookContentImpl implements BookContentService {
 		Book book = bookRepo.findById(content.getBookId()).orElseThrow(() -> 
 			new BookNotFoundException("Book not found for content with id: " + contentId));
 		
-		if(book.getStatus()!=BookStatus.PUBLIC) {
+		if(!book.getStatusVisible().equals(BookVisibilityStatus.PUBLIC)) {
 			throw new BookDeletedException("Book for the contentID " + contentId + " is not PUBLIC.");
 		}
 		

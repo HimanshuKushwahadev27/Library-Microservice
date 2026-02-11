@@ -1,5 +1,6 @@
 package com.emi.Catalog_Service.ServiceImpl;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -49,6 +50,17 @@ public class GenreServiceImpl implements GenreService {
 						);
 		
 		return genreMapper.toDto(genre);
+	}
+
+	@Override
+	public List<ResponseGenreDto> getAllGenres() {
+		List<Genre> genres = genreRepo.findAll();
+		
+		if(genres.isEmpty()) {
+			throw  new GenreNotFoundException("No genres created yet" );
+		}
+		
+		return genres.stream().map(genreMapper::toDto).toList();
 	}
 
 }

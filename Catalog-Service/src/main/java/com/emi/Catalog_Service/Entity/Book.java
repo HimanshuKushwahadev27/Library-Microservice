@@ -8,7 +8,8 @@ import java.util.UUID;
 
 import com.emi.Catalog_Service.Snapshots.AuthorSnapshots;
 import com.emi.Catalog_Service.Snapshots.GenreSnapshot;
-import com.emi.Catalog_Service.enums.BookStatus;
+import com.emi.Catalog_Service.enums.BookLifeCycleStatus;
+import com.emi.Catalog_Service.enums.BookVisibilityStatus;
 
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -71,8 +72,12 @@ public class Book {
 	private Instant updatedAt;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name="status", nullable=false)
-	private BookStatus status;
+	@Column(name="status_lifecycle", nullable=false)
+	private BookLifeCycleStatus statusLifecycle;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name="status_visible", nullable=false)
+	private BookVisibilityStatus statusVisible;
 	
 	@Column(name="total_chapters", nullable=false)
 	private Integer totalChapters;
