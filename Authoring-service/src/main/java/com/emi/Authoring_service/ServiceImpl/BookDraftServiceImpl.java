@@ -15,7 +15,7 @@ import com.emi.Authoring_service.ResponseDtos.ResponseDraftBookDto;
 import com.emi.Authoring_service.clients.CatalogService;
 import com.emi.Authoring_service.entity.AuthorDraftBook;
 import com.emi.Authoring_service.entity.AuthorDraftChapter;
-import com.emi.Authoring_service.enums.BookStatus;
+import com.emi.Authoring_service.enums.BookVisibilityStatus;
 import com.emi.Authoring_service.exceptions.BookAlreadyExistsException;
 import com.emi.Authoring_service.exceptions.DraftNotFoundException;
 import com.emi.Authoring_service.exceptions.NotAuthorizedException;
@@ -66,7 +66,7 @@ public class BookDraftServiceImpl implements DraftBookService {
 			throw new NotAuthorizedException("You are not permitted to access the book draft with id " + request.id());
 		}
 		
-		if(bookDraft.getStatus() == BookStatus.PUBLIC) {
+		if(bookDraft.getStatusVisible().equals( BookVisibilityStatus.PUBLIC) && bookDraft.getCatalogBookId()!=null) {
 			this.updatePublishedBook(request);
 		}
 		
@@ -139,14 +139,14 @@ public class BookDraftServiceImpl implements DraftBookService {
 //	@PreAuthorize("hasRole('AUTHOR')")
 	@Transactional
 	@Override
-	public void publishDraftedBook(PublishDraftBookRequest request, UUID authorId) {
+	public UUID publishDraftedBook(PublishDraftBookRequest request, UUID authorId) {
 		AuthorDraftBook bookDraft = bookDraftRepo
 			      .findByAuthorIdAndId(authorId, request.draftBookId())
 			      .orElseThrow(
 			    		  () -> new DraftNotFoundException("Book Draft for the id " + request.draftBookId() + "not found")
 			    		  );
 		
-		if(bookDraft.getStatus() == BookStatus.PUBLIC) {
+		if(bookDraft.getStatusVisible().equals( BookVisibilityStatus.PUBLIC)) {
 			throw new NotAuthorizedException("Book with id " + request.draftBookId() + "is already published");
 		}
 		
@@ -154,13 +154,17 @@ public class BookDraftServiceImpl implements DraftBookService {
 			throw new NotAuthorizedException("You are not permitted to access the book draft with id " + authorId);
 		}
 		
-		bookDraft.setStatus(BookStatus.PUBLIC);
-		bookDraftRepo.save(bookDraft);
-		catalogService
+		bookDraft.setStatusVisible(BookVisibilityStatus.PUBLIC);
+		UUID bookCatalogId=catalogService
 			.createBook(
 					bookDraftMapper
 					.toPublish(bookDraft, request)
 					);
+		bookDraft.setCatalogBookId(bookCatalogId);
+		bookDraftRepo.save(bookDraft);
+		
+		return bookCatalogId;
+
 	}
 
 //	@PreAuthorize("hasRole('AUTHOR')")

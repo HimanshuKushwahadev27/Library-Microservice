@@ -4,7 +4,8 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.UUID;
 
-import com.emi.Authoring_service.enums.BookStatus;
+import com.emi.Authoring_service.enums.BookLifeCycleStatus;
+import com.emi.Authoring_service.enums.BookVisibilityStatus;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -71,13 +72,19 @@ public record RequestBookCreationDto(
 	    )
 		String description,
 		
-	    @NotBlank
-	    @Size(max = 50)
+		@NotNull
 	    @Schema(
-	        description = "Status for the book",
-	        example = "ONGOING, HIDDEN, COMPLETED "
+	        description = "Publication status of the book",
+	        example = "ONGOING, DRAFT, COMPLETED"
 	    )
-		BookStatus status
+		BookLifeCycleStatus lifeCycleStatus,
+		
+		@NotNull
+	    @Schema(
+	        description = "Publication status of the book",
+	        example = "PRIVATE, PUBLIC"
+	    )
+		BookVisibilityStatus visibilityStatus
 		) {
 }
 

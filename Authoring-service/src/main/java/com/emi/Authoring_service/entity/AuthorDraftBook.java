@@ -4,7 +4,8 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
-import com.emi.Authoring_service.enums.BookStatus;
+import com.emi.Authoring_service.enums.BookLifeCycleStatus;
+import com.emi.Authoring_service.enums.BookVisibilityStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -45,8 +46,12 @@ public class AuthorDraftBook {
 	private BigDecimal price;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name="status", nullable=false)
-	private BookStatus status;
+	@Column(name="status_lifecycle", nullable=false)
+	private BookLifeCycleStatus statusLifecycle;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name="status_visible", nullable=false)
+	private BookVisibilityStatus statusVisible;
 	
 	@Column(name="created_at", nullable=false, updatable=false)
 	private Instant createdAt;

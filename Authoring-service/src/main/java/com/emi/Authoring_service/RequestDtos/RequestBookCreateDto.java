@@ -3,7 +3,8 @@ package com.emi.Authoring_service.RequestDtos;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-import com.emi.Authoring_service.enums.BookStatus;
+import com.emi.Authoring_service.enums.BookLifeCycleStatus;
+import com.emi.Authoring_service.enums.BookVisibilityStatus;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.DecimalMin;
@@ -39,8 +40,19 @@ public record RequestBookCreateDto(
         @Digits(integer = 10, fraction = 2, message = "Invalid price format")
         BigDecimal price,
 
-        @NotNull(message = "Book status is required")
-        BookStatus status,
+        @NotNull
+	    @Schema(
+	        description = "Publication status of the book",
+	        example = "ONGOING, DRAFT, COMPLETED"
+	    )
+		BookLifeCycleStatus lifeCycleStatus,
+		
+	    @NotNull
+	    @Schema(
+	        description = "Publication status of the book",
+	        example = "PRIVATE, PUBLIC"
+	    )
+		BookVisibilityStatus visibilityStatus,
 
         @NotNull(message = "Free preview flag is required")
         Boolean freePreview

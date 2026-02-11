@@ -4,9 +4,12 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
-import com.emi.Authoring_service.enums.BookStatus;
+import com.emi.Authoring_service.enums.BookLifeCycleStatus;
+
+import com.emi.Authoring_service.enums.BookVisibilityStatus;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+
 
 @Schema(description="Response DTO for book draft")
 public record ResponseDraftBookDto(
@@ -17,7 +20,8 @@ public record ResponseDraftBookDto(
 		String description,
 		String isbn,
 		BigDecimal price,
-		BookStatus status,
+		BookLifeCycleStatus lifeCycleStatus,	
+		BookVisibilityStatus visibilityStatus,
 		Boolean freePreview,
 		Instant createdAt,
 		Instant updatedAt

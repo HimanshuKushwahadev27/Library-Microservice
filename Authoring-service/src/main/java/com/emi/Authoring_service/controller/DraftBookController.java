@@ -55,9 +55,8 @@ public class DraftBookController {
 	}
 	
 	@PostMapping("/publish/{authorId}")
-	public ResponseEntity<String> publishDraftedBook( @RequestBody @Valid PublishDraftBookRequest request, @PathVariable UUID authorId) {
-		draftBookService.publishDraftedBook(request, authorId);
-		return ResponseEntity.ok("Book published successfully");
+	public ResponseEntity<UUID> publishDraftedBook( @RequestBody @Valid PublishDraftBookRequest request, @PathVariable UUID authorId) {
+		return ResponseEntity.ok(draftBookService.publishDraftedBook(request, authorId));
 	}
 	
 

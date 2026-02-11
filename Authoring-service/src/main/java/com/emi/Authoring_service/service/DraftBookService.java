@@ -17,7 +17,7 @@ public interface DraftBookService {
 	
 	public String deleteDraftBookById(UUID bookId, UUID authorId);
 	
-	public void publishDraftedBook( PublishDraftBookRequest request, UUID authorId);
+	public UUID publishDraftedBook( PublishDraftBookRequest request, UUID authorId);
 	
 
 	public void updatePublishedBook( RequestUpdateDraftBookDto request);

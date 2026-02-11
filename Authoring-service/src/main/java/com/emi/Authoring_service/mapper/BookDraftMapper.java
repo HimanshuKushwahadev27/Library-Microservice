@@ -27,7 +27,8 @@ public class BookDraftMapper {
 		draftBook.setDescription(request.description());
 		draftBook.setFreePreview(request.freePreview());
 		draftBook.setIsbn(request.isbn());
-		draftBook.setStatus(request.status());
+		draftBook.setStatusLifecycle(request.lifeCycleStatus());
+		draftBook.setStatusVisible(request.visibilityStatus());
 		draftBook.setPrice(request.price());
 		draftBook.setTitle(request.title());
 		draftBook.setUpdatedAt(Instant.now());
@@ -44,7 +45,8 @@ public class BookDraftMapper {
 				draftBook.getDescription(),
 				draftBook.getIsbn(),
 				draftBook.getPrice(),
-				draftBook.getStatus(),
+				draftBook.getStatusLifecycle(),
+				draftBook.getStatusVisible(),
 				draftBook.getFreePreview(),
 				draftBook.getCreatedAt(),
 				draftBook.getUpdatedAt()
@@ -57,7 +59,8 @@ public class BookDraftMapper {
 		
 		draftBook.setDescription(request.description());
 		draftBook.setFreePreview(request.freePreview());
-		draftBook.setStatus(request.status());
+		draftBook.setStatusLifecycle(request.lifeCycleStatus());
+		draftBook.setStatusVisible(request.visibilityStatus());
 		draftBook.setPrice(request.price());
 		draftBook.setTitle(request.title());
 		draftBook.setUpdatedAt(Instant.now());
@@ -75,17 +78,19 @@ public class BookDraftMapper {
 				request.genreInfo(),
 				bookDraft.getFreePreview(),
 				bookDraft.getDescription(),
-				bookDraft.getStatus()
+				bookDraft.getStatusLifecycle(),
+				bookDraft.getStatusVisible()
 				);
 	}
 
 	public @Valid RequsestBookUpdateDto toUpdatePublished(RequestUpdateDraftBookDto request) {
 		return new RequsestBookUpdateDto(
-				request.id(),
+				request.catalogId(),
 				request.price(),
 				request.description(),
 				request.freePreview(),
-				request.status()
+				request.lifeCycleStatus(),
+				request.visibilityStatus()
 				);
 	}
 

@@ -1,0 +1,5 @@
+ALTER TABLE draft_books
+  DROP COLUMN IF EXISTS status,
+  ADD COLUMN status_visible VARCHAR(50) NOT NULL DEFAULT 'PUBLIC',
+  ADD COLUMN status_lifecycle VARCHAR(50) NOT NULL DEFAULT 'ONGOING' ;
+  

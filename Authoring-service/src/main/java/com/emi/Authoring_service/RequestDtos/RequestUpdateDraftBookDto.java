@@ -3,9 +3,11 @@ package com.emi.Authoring_service.RequestDtos;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-import com.emi.Authoring_service.enums.BookStatus;
+import com.emi.Authoring_service.enums.BookLifeCycleStatus;
+import com.emi.Authoring_service.enums.BookVisibilityStatus;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
@@ -14,6 +16,14 @@ import jakarta.validation.constraints.Size;
 @Schema(description = "Request payload to update an existing draft book in the Authoring service")
 public record RequestUpdateDraftBookDto(
 
+	
+    @Nullable
+    @Schema(
+        description = "Unique identifier of the  book in catalog to be updated (published book id)",   
+        example = "a34e8c19-1234-4f8b-9a01-8f12c8d9e111"
+    )
+    UUID catalogId,
+	    
     @NotNull
     @Schema(
         description = "Unique identifier of the draft book to be updated",
@@ -48,12 +58,19 @@ public record RequestUpdateDraftBookDto(
     )
     BigDecimal price,
 
+    @NotNull
     @Schema(
-        description = "Updated workflow status of the draft book",
-        example = "DRAFT",
-        allowableValues = {"DRAFT", "READY"}
+        description = "Publication status of the book",
+        example = "ONGOING, DRAFT, COMPLETED"
     )
-    BookStatus status,
+	BookLifeCycleStatus lifeCycleStatus,
+	
+	@NotNull
+    @Schema(
+        description = "Publication status of the book",
+        example = "PRIVATE, PUBLIC"
+    )
+	BookVisibilityStatus visibilityStatus,
 
     @Schema(
         description = "Whether free preview is enabled for the book (optional)",

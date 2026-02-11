@@ -18,7 +18,7 @@ import com.emi.Authoring_service.ResponseDtos.ResponseDraftChapterDto;
 import com.emi.Authoring_service.clients.CatalogService;
 import com.emi.Authoring_service.entity.AuthorDraftBook;
 import com.emi.Authoring_service.entity.AuthorDraftChapter;
-import com.emi.Authoring_service.enums.BookStatus;
+import com.emi.Authoring_service.enums.BookVisibilityStatus;
 import com.emi.Authoring_service.enums.ChapterStatus;
 import com.emi.Authoring_service.exceptions.ChapterDraftExistsException;
 import com.emi.Authoring_service.exceptions.DraftNotFoundException;
@@ -242,7 +242,7 @@ public class ChapterDraftServiceImpl implements DraftChapterService {
 			throw new NotAuthorizedException("You are not authorized to view the book draft with id " + draftBook.getId());
 		}
 		
-		if(draftBook.getStatus()!= BookStatus.PUBLIC) {
+		if(!draftBook.getStatusVisible().equals( BookVisibilityStatus.PUBLIC)) {
 			throw new NotAuthorizedException("Please first publish the book with id " +draftBook.getId() +" then publish the chapters");
 		}
 		
