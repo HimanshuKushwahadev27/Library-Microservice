@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+
+  postgres:
+    image: postgres:15
+    container_name: library-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: userservice_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - Library-net
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  user-service:
+    build:
+      context: ..
+      dockerfile: User-service/Dockerfile
+    container_name: user-service
+    restart: on-failure
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/userservice_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    ports:
+      - "8083:8080"
+    depends_on:
+      - postgres
+    networks:
+      - Library-net
+
+networks:
+  Library-net:
+    driver: bridge
+
+volumes:
+  postgres_data:
