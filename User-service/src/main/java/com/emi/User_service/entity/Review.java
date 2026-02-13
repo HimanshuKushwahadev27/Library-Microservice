@@ -26,6 +26,10 @@ public class Review {
 
     @Column(name = "keycloak_id", nullable = false)
     private UUID keycloakId;
+    
+    
+    @Column(name = "user_id", nullable = false)
+    private UUID userId;
 
     @Column(name = "book_id", nullable = false)
     private UUID bookId;
