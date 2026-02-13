@@ -1,0 +1,56 @@
+version: "3.8"
+
+services:
+  keycloak-db:
+    image: postgres:15
+    container_name: keycloak-db
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak
+    volumes:
+      - keycloak_db_data:/var/lib/postgresql/data
+    networks:
+      - gateway-net
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.1
+    container_name: keycloak
+    command: start-dev
+    depends_on:
+      - keycloak-db
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloak-db:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak
+      KC_HOSTNAME_PORT: 8080
+      KC_PROXY: edge
+      KC_HTTP_ENABLED: "true"
+      KC_HOSTNAME_STRICT: "false"
+    ports:
+      - "8181:8080"
+    networks:
+      - gateway-net
+
+  api-gateway:
+    build: ../Api-gateway
+    container_name: api-gateway
+    depends_on:
+      - keycloak
+    environment:
+      SPRING_APPLICATION_NAME: api-gateway
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI: http://localhost:8080/realms/Library-realm
+    ports:
+      - "8084:8080"
+    networks:
+      - gateway-net
+
+volumes:
+  keycloak_db_data:
+
+networks:
+  gateway-net:
+    driver: bridge
