@@ -8,6 +8,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
+import io.swagger.v3.oas.models.ExternalDocumentation;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -21,5 +26,21 @@ public class SecurityConfig {
 				.anyRequest().permitAll()
 			).build()
 			;
+	}
+	
+	@Bean
+	OpenAPI openApiConfig() {
+		return new OpenAPI()
+				.info(new Info()
+						.title("Catalog Service API")
+						.description("API documentation for Catalog-service")
+						.version("2.0")
+						.license(new License()
+								.name("Apache 2.0")
+								.url("http://springdoc.org")
+								))
+				.externalDocs(new ExternalDocumentation()
+						.description("Link to external documentation")
+						.url("https://Catalog-demo.com/docs"));
 	}
 }
