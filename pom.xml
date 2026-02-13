@@ -14,7 +14,7 @@
     <modules>
         <module>Api-gateway</module>
         <module>Authoring-service</module>
-        <module>Author-service</module>
+        <module>Author-Service</module>
         <module>Catalog-Service</module>
         <module>User-service</module>
     </modules>

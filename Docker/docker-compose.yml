@@ -39,7 +39,10 @@ services:
   keycloak:
      image: quay.io/keycloak/keycloak:24.0.1
      container_name: keycloak
-     command: start-dev
+     command: 
+      - start-dev
+      - --spi-theme-cache-themes=false
+      - --spi-theme-cache-templates=false
      restart: always
      depends_on:
        - keycloak-db
@@ -58,9 +61,13 @@ services:
        - "8181:8080"
      networks:
        - Library-net
+     volumes:
+       - ../keycloak-themes:/opt/keycloak/themes
 
   authoring-service:
-    build: ../Authoring-service
+    build: 
+      context: ..
+      dockerfile: Authoring-service/Dockerfile
     container_name: authoring-service
     restart: on-failure
     environment:
@@ -77,7 +84,9 @@ services:
       - Library-net
 
   catalog-service:
-    build: ../Catalog-Service
+    build: 
+      context: ..
+      dockerfile: Catalog-Service/Dockerfile
     container_name: catalog-Service
     restart: on-failure
     environment:
@@ -95,7 +104,9 @@ services:
       
       
   user-service:
-    build: ../User-Service
+    build: 
+      context: ..
+      dockerfile: User-service/Dockerfile
     container_name: user-Service
     restart: on-failure
     environment:
@@ -113,7 +124,9 @@ services:
       
       
   author-service:
-    build: ../Author-Service
+    build:
+      context: ..
+      dockerfile: Author-Service/Dockerfile
     container_name: author-Service
     restart: on-failure
     environment:
@@ -131,7 +144,9 @@ services:
       
       
   api-gateway:
-       build: ../Api-gateway
+       build:
+        context: ..
+        dockerfile: Api-gateway/Dockerfile
        container_name: api-gateway
        restart: on-failure
        environment:

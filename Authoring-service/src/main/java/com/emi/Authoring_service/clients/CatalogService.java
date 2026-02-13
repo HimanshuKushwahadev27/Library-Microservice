@@ -30,7 +30,7 @@ public interface CatalogService {
 	public List<ResponseContentDto> createMultipleBookContents(
 			@RequestBody @Valid List<RequestCreateContentDto> request);
 	
-	@PatchMapping(value="api/books/update/{authorId}")
+	@PatchMapping(value="api/books/update/{id}")
 	public ResponseBookDto updateBook(
-			@RequestBody @Valid RequsestBookUpdateDto request, @PathVariable UUID authorId);
+			@RequestBody @Valid RequsestBookUpdateDto request, @PathVariable("id") UUID authorId);
 }
