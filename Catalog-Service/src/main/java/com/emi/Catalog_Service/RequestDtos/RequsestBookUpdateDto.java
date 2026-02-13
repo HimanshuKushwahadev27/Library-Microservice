@@ -3,8 +3,12 @@ package com.emi.Catalog_Service.RequestDtos;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+<<<<<<< HEAD
 import com.emi.Catalog_Service.enums.BookLifeCycleStatus;
 import com.emi.Catalog_Service.enums.BookVisibilityStatus;
+=======
+import com.emi.Catalog_Service.enums.BookStatus;
+>>>>>>> catalog-service
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -48,6 +52,7 @@ public record RequsestBookUpdateDto (
 		Boolean freePreviewAvailable,
 		
 
+<<<<<<< HEAD
 		@NotNull
 	    @Schema(
 	        description = "Publication status of the book",
@@ -61,6 +66,15 @@ public record RequsestBookUpdateDto (
 	        example = "PRIVATE, PUBLIC"
 	    )
 		BookVisibilityStatus visibilityStatus
+=======
+
+	    @NotBlank
+	    @Schema(
+	        description = "Publication status of the book",
+	        example = "ONGOING"
+	    )
+		BookStatus status
+>>>>>>> catalog-service
 		
 		)
 {

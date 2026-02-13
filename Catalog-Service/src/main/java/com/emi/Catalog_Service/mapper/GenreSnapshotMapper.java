@@ -1,7 +1,6 @@
 package com.emi.Catalog_Service.mapper;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -26,21 +25,5 @@ public class GenreSnapshotMapper {
 				.collect(Collectors.toSet())
 				);
 	}
-	
-	public void updateGenreSnapshot(Book book, Map<UUID, String> genreInfo) {
-         Set<GenreSnapshot> existingSnapshot=book.getGenreIds();
-         
-         if(existingSnapshot==null) {
-        	 setGenreSnapshot(book, genreInfo);
-         }else {
-        	 genreInfo.entrySet()
-        	 .forEach(entry ->{
-        		 existingSnapshot
-        		 .add(
-        				 giveSnapshotFromGenre(entry.getKey(), entry.getValue())
-        			 );
-        	 });
-        	 book.setGenreIds(existingSnapshot);
-        }
-	}
+
 }

@@ -113,11 +113,25 @@ public class BookServiceImpl implements BookService {
 			throw new BookDeletedException("Book with id: " + requestDto.bookId() + " has been already deleted.");
 		}
 		
+<<<<<<< HEAD
 		if(!book.getAuthorSnapshots().stream().anyMatch(snapshot -> snapshot.getId().equals(authorId))){
 			throw new NotAuthorizedException("You are not authorized to make any changes to book with Id " + book.getId());
 		}
 		
 		book=bookMapper.updateBookEntity(requestDto, book);
+=======
+
+		book=bookMapper.updateBookEntity(requestDto, book);
+		if(!book.getAuthorSnapshots().stream().anyMatch(snapshot -> snapshot.getId().equals(authorId))){
+			throw new NotAuthorizedException("You are not authorized to make any changes to book with Id " + book.getId());
+		}
+		
+		book = bookMapper.updateBookEntity(requestDto, book);
+		
+		if(requestDto.status() == BookStatus.PUBLIC) {
+			book.setStatus(BookStatus.PUBLIC);
+		}
+>>>>>>> catalog-service
 		
 		bookRepo.save(book);
 		
